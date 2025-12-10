@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { LayoutDashboard, MessageSquare, Factory, Shield, Car } from 'lucide-react'
 import Dashboard from './components/Dashboard'
-import VehicleDetail from './components/VehicleDetail'
 import ChatInterface from './components/ChatInterface'
 import InsightsDashboard from './components/InsightsDashboard'
 import UEBAPanel from './components/UEBAPanel'
@@ -11,10 +11,10 @@ function App() {
     const [selectedVehicle, setSelectedVehicle] = useState(null)
 
     const tabs = [
-        { id: 'dashboard', label: '📊 Dashboard', icon: '📊' },
-        { id: 'chat', label: '💬 AI Assistant', icon: '💬' },
-        { id: 'insights', label: '🏭 Manufacturing', icon: '🏭' },
-        { id: 'security', label: '🔐 UEBA Security', icon: '🔐' }
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
+        { id: 'insights', label: 'Manufacturing', icon: Factory },
+        { id: 'security', label: 'UEBA Security', icon: Shield }
     ]
 
     const handleVehicleSelect = (vehicle) => {
@@ -26,19 +26,23 @@ function App() {
         <div className="app">
             <header className="header">
                 <div className="logo">
-                    <span>🚗</span>
+                    <Car size={28} />
                     <span>AutoCare AI</span>
                 </div>
                 <nav className="nav-tabs">
-                    {tabs.map(tab => (
-                        <button
-                            key={tab.id}
-                            className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
-                            onClick={() => setActiveTab(tab.id)}
-                        >
-                            {tab.label}
-                        </button>
-                    ))}
+                    {tabs.map(tab => {
+                        const Icon = tab.icon
+                        return (
+                            <button
+                                key={tab.id}
+                                className={`nav-tab ${activeTab === tab.id ? 'active' : ''}`}
+                                onClick={() => setActiveTab(tab.id)}
+                            >
+                                <Icon size={16} />
+                                {tab.label}
+                            </button>
+                        )
+                    })}
                 </nav>
             </header>
 

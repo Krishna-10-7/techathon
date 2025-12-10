@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Shield, Bot, AlertTriangle, Activity, Eye, Zap, ShieldAlert, ShieldCheck, Clock } from 'lucide-react'
 
 const agents = [
     { id: 'master_agent', name: 'Master Agent', role: 'Orchestrator', status: 'active', actions: 45 },
@@ -48,13 +49,13 @@ export default function UEBAPanel() {
             {/* Security Status */}
             <div className="card full-width">
                 <div className="card-header">
-                    <h2 className="card-title">🔐 UEBA Security Monitor</h2>
+                    <h2 className="card-title"><Shield size={20} /> UEBA Security Monitor</h2>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <span className={`badge ${stats.critical > 0 ? 'danger' : 'success'}`}>
-                            {stats.critical > 0 ? '⚠️ ALERT' : '✅ SECURE'}
+                            {stats.critical > 0 ? <><ShieldAlert size={12} /> ALERT</> : <><ShieldCheck size={12} /> SECURE</>}
                         </span>
                         <button className="btn btn-secondary" onClick={() => setShowSimulate(!showSimulate)}>
-                            🧪 Simulate Anomaly
+                            <Zap size={14} /> Simulate Anomaly
                         </button>
                     </div>
                 </div>
@@ -68,10 +69,10 @@ export default function UEBAPanel() {
                         <p style={{ marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>Simulate an anomaly to see UEBA in action:</p>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                             <button className="btn btn-primary" onClick={() => simulateAnomaly('unauthorized_data_access')}>
-                                Data Access Violation
+                                <Eye size={14} /> Data Access Violation
                             </button>
                             <button className="btn btn-primary" onClick={() => simulateAnomaly('unauthorized_action')}>
-                                Unauthorized Action
+                                <AlertTriangle size={14} /> Unauthorized Action
                             </button>
                         </div>
                     </motion.div>
@@ -100,7 +101,7 @@ export default function UEBAPanel() {
             {/* Agent Status */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">🤖 Agent Activity</h2>
+                    <h2 className="card-title"><Bot size={20} /> Agent Activity</h2>
                 </div>
                 <div>
                     {agents.map((agent, i) => (
@@ -125,7 +126,7 @@ export default function UEBAPanel() {
             {/* Detected Anomalies */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">⚠️ Detected Anomalies</h2>
+                    <h2 className="card-title"><AlertTriangle size={20} /> Detected Anomalies</h2>
                 </div>
                 <div className="vehicle-list">
                     {anomalies.map((anomaly, i) => (
@@ -137,15 +138,16 @@ export default function UEBAPanel() {
                             transition={{ delay: i * 0.05 }}
                         >
                             <span className="alert-icon">
-                                {anomaly.severity === 'critical' ? '🚨' : anomaly.severity === 'high' ? '⚠️' : '📋'}
+                                {anomaly.severity === 'critical' ? <ShieldAlert size={20} /> :
+                                    anomaly.severity === 'high' ? <AlertTriangle size={20} /> : <Activity size={20} />}
                             </span>
                             <div className="alert-content">
                                 <div className="alert-title">{anomaly.type.replace(/_/g, ' ').toUpperCase()}</div>
                                 <div className="alert-description">
                                     Agent: {anomaly.agent} • {anomaly.description}
                                 </div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                                    {anomaly.time}
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <Clock size={12} /> {anomaly.time}
                                 </div>
                             </div>
                             <span className={`badge ${anomaly.severity === 'critical' ? 'danger' : anomaly.severity === 'high' ? 'warning' : 'info'}`}>

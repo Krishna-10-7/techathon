@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { Car, Users, AlertTriangle, Activity, Bell, MapPin, Gauge, Phone } from 'lucide-react'
 
-// Mock data for demo (when backend is not running)
 const mockVehicles = [
     { id: 'VH001', make: 'Tata', model: 'Nexon EV', owner: { name: 'Rahul Sharma' }, odometer: 25420, city: 'Mumbai', health_score: 92, active_alerts: 0 },
     { id: 'VH002', make: 'Mahindra', model: 'XUV700', owner: { name: 'Priya Patel' }, odometer: 45780, city: 'Delhi', health_score: 58, active_alerts: 2 },
@@ -17,10 +17,8 @@ const mockVehicles = [
 
 export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
     const [vehicles, setVehicles] = useState(mockVehicles)
-    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // Try to fetch from API, fallback to mock
         fetch('/api/vehicles')
             .then(res => res.json())
             .then(data => setVehicles(data.vehicles || mockVehicles))
@@ -46,7 +44,7 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
             {/* Stats Overview */}
             <div className="card full-width">
                 <div className="card-header">
-                    <h2 className="card-title">🚗 Fleet Overview</h2>
+                    <h2 className="card-title"><Car size={20} /> Fleet Overview</h2>
                     <span className="badge info">{vehicles.length} Vehicles</span>
                 </div>
                 <div className="stats-grid">
@@ -76,13 +74,13 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
             {/* Vehicle List */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">📋 Vehicle Status</h2>
+                    <h2 className="card-title"><Activity size={20} /> Vehicle Status</h2>
                 </div>
                 <div className="vehicle-list">
                     {vehicles.map((vehicle, i) => (
                         <motion.div
                             key={vehicle.id}
-                            className={`vehicle-item ${selectedVehicle?.id === vehicle.id ? 'selected' : ''}`}
+                            className="vehicle-item"
                             onClick={() => onVehicleSelect(vehicle)}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -90,10 +88,20 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
                             whileHover={{ scale: 1.01 }}
                             style={{ borderColor: selectedVehicle?.id === vehicle.id ? 'var(--accent-primary)' : 'transparent' }}
                         >
-                            <div className="vehicle-icon">🚗</div>
+                            <div className="vehicle-icon"><Car size={24} /></div>
                             <div className="vehicle-info">
                                 <div className="vehicle-name">{vehicle.make} {vehicle.model}</div>
-                                <div className="vehicle-meta">{vehicle.owner.name} • {vehicle.city} • {vehicle.odometer.toLocaleString()} km</div>
+                                <div className="vehicle-meta">
+                                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <Users size={12} /> {vehicle.owner.name}
+                                    </span>
+                                    <span style={{ marginLeft: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <MapPin size={12} /> {vehicle.city}
+                                    </span>
+                                    <span style={{ marginLeft: '8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                        <Gauge size={12} /> {vehicle.odometer.toLocaleString()} km
+                                    </span>
+                                </div>
                             </div>
                             <div className="vehicle-health">
                                 <div className="health-bar">
@@ -115,7 +123,7 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
             {/* Priority Alerts */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">⚠️ Priority Alerts</h2>
+                    <h2 className="card-title"><AlertTriangle size={20} /> Priority Alerts</h2>
                 </div>
                 <div className="vehicle-list">
                     {vehicles.filter(v => v.health_score < 60).map((vehicle, i) => (
@@ -126,7 +134,7 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
                             animate={{ opacity: 1 }}
                             transition={{ delay: i * 0.1 }}
                         >
-                            <span className="alert-icon">🚨</span>
+                            <span className="alert-icon"><Bell size={20} /></span>
                             <div className="alert-content">
                                 <div className="alert-title">{vehicle.make} {vehicle.model} - {vehicle.owner.name}</div>
                                 <div className="alert-description">
@@ -134,13 +142,13 @@ export default function Dashboard({ onVehicleSelect, selectedVehicle }) {
                                 </div>
                             </div>
                             <button className="btn btn-primary" onClick={() => onVehicleSelect(vehicle)}>
-                                Contact
+                                <Phone size={14} /> Contact
                             </button>
                         </motion.div>
                     ))}
                     {vehicles.filter(v => v.health_score < 60).length === 0 && (
                         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-                            ✅ No critical alerts at this time
+                            No critical alerts at this time
                         </div>
                     )}
                 </div>

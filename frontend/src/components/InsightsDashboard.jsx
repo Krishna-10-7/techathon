@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Factory, ClipboardList, Lightbulb, TrendingUp, AlertCircle, CheckCircle, Clock, FileText } from 'lucide-react'
 
 const mockRCA = [
     { id: 'RCA001', component: 'ABS Sensor', models: ['XUV700'], occurrences: 156, severity: 'high', status: 'investigating' },
@@ -25,12 +26,20 @@ export default function InsightsDashboard() {
         potentialSavings: '₹25L'
     }
 
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'capa_implemented': return <CheckCircle size={16} style={{ color: 'var(--success)' }} />
+            case 'capa_in_progress': return <Clock size={16} style={{ color: 'var(--info)' }} />
+            default: return <AlertCircle size={16} style={{ color: 'var(--warning)' }} />
+        }
+    }
+
     return (
         <div className="dashboard-grid">
             {/* Summary Stats */}
             <div className="card full-width">
                 <div className="card-header">
-                    <h2 className="card-title">🏭 Manufacturing Feedback Loop</h2>
+                    <h2 className="card-title"><Factory size={20} /> Manufacturing Feedback Loop</h2>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <button className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>Overview</button>
                         <button className={`nav-tab ${activeTab === 'rca' ? 'active' : ''}`} onClick={() => setActiveTab('rca')}>RCA Records</button>
@@ -64,7 +73,7 @@ export default function InsightsDashboard() {
             {/* RCA Records */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">📋 Root Cause Analysis</h2>
+                    <h2 className="card-title"><ClipboardList size={20} /> Root Cause Analysis</h2>
                 </div>
                 <div className="vehicle-list">
                     {mockRCA.map((rca, i) => (
@@ -75,16 +84,19 @@ export default function InsightsDashboard() {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.1 }}
                         >
-                            <span className="alert-icon">{rca.severity === 'critical' ? '🔴' : rca.severity === 'high' ? '🟠' : '🟡'}</span>
+                            <span className="alert-icon"><FileText size={20} /></span>
                             <div className="alert-content">
                                 <div className="alert-title">{rca.component}</div>
                                 <div className="alert-description">
                                     {rca.models.join(', ')} • {rca.occurrences} occurrences
                                 </div>
                             </div>
-                            <span className={`badge ${rca.status === 'capa_implemented' ? 'success' : rca.status === 'capa_in_progress' ? 'info' : 'warning'}`}>
-                                {rca.status.replace('_', ' ')}
-                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                {getStatusIcon(rca.status)}
+                                <span className={`badge ${rca.status === 'capa_implemented' ? 'success' : rca.status === 'capa_in_progress' ? 'info' : 'warning'}`}>
+                                    {rca.status.replace(/_/g, ' ')}
+                                </span>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
@@ -93,7 +105,7 @@ export default function InsightsDashboard() {
             {/* Manufacturing Insights */}
             <div className="card">
                 <div className="card-header">
-                    <h2 className="card-title">💡 Actionable Insights</h2>
+                    <h2 className="card-title"><Lightbulb size={20} /> Actionable Insights</h2>
                 </div>
                 <div className="vehicle-list">
                     {mockInsights.map((insight, i) => (
@@ -105,7 +117,7 @@ export default function InsightsDashboard() {
                             transition={{ delay: i * 0.1 }}
                         >
                             <div className="vehicle-icon" style={{ background: insight.priority === 'high' ? 'var(--danger)' : 'var(--accent-gradient)' }}>
-                                💡
+                                <TrendingUp size={20} />
                             </div>
                             <div className="vehicle-info">
                                 <div className="vehicle-name">{insight.title}</div>
