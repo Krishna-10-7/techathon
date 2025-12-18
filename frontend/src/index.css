@@ -127,6 +127,15 @@ body {
     color: white;
 }
 
+/* Tab label visibility - default: show full, hide short */
+.tab-label-full {
+    display: inline;
+}
+
+.tab-label-short {
+    display: none;
+}
+
 /* Typing Indicator */
 .typing-indicator {
     display: flex;
@@ -635,6 +644,15 @@ body {
     .nav-tab svg {
         width: 14px;
         height: 14px;
+    }
+
+    /* Show short labels on mobile */
+    .tab-label-full {
+        display: none;
+    }
+
+    .tab-label-short {
+        display: inline;
     }
 
     .main-content {

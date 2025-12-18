@@ -11,10 +11,10 @@ function App() {
     const [selectedVehicle, setSelectedVehicle] = useState(null)
 
     const tabs = [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-        { id: 'chat', label: 'AI Assistant', icon: MessageSquare },
-        { id: 'insights', label: 'Manufacturing', icon: Factory },
-        { id: 'security', label: 'UEBA Security', icon: Shield }
+        { id: 'dashboard', label: 'Dashboard', shortLabel: 'Home', icon: LayoutDashboard },
+        { id: 'chat', label: 'AI Assistant', shortLabel: 'Chat', icon: MessageSquare },
+        { id: 'insights', label: 'Manufacturing', shortLabel: 'Insights', icon: Factory },
+        { id: 'security', label: 'UEBA Security', shortLabel: 'UEBA', icon: Shield }
     ]
 
     const handleVehicleSelect = (vehicle) => {
@@ -39,7 +39,8 @@ function App() {
                                 onClick={() => setActiveTab(tab.id)}
                             >
                                 <Icon size={16} />
-                                {tab.label}
+                                <span className="tab-label-full">{tab.label}</span>
+                                <span className="tab-label-short">{tab.shortLabel}</span>
                             </button>
                         )
                     })}
